@@ -1,12 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 
 const SingleBlog = ({ title, content, imageUrl }) => {
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate(); 
 
   const handleReadMore = () => {
-    // Use navigate to go to the "BlogPage" route with the current props
     navigate(`/blog-page/${title}`, {
       state: {
         title,

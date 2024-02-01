@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import SingleBlog from './SingleBlog';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Blog = ({ blogPosts }) => {
   const [displayedPosts, setDisplayedPosts] = useState(3); // Number of posts to initially display
   const navigate = useNavigate()
+  
   const loadMorePosts = () => {
     navigate('/all-posts'); 
   };
@@ -22,7 +23,7 @@ const Blog = ({ blogPosts }) => {
         <div className="flex flex-wrap -mx-4 py-2">
           {blogPosts.slice(0, displayedPosts).map((post, index) => (
             <div key={index} className="w-full md:w-1/2 lg:w-1/3 px-4 mb-4">
-              <SingleBlog title={post.title} content={post.content} imageUrl={post.imageUrl} />
+              <SingleBlog title={post.postTitle} content={post.postBody} imageUrl={`http://localhost:8080/getImage/${post.id}`} />
             </div>
           ))}
         </div>
