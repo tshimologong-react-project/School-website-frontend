@@ -1,13 +1,13 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom'; // Import useLocation to access props from the previous route
+import { useLocation } from 'react-router-dom';
 
 const BlogPage = () => {
-  // Use useLocation to access the state passed from the previous route
+  
   const location = useLocation();
   const { title, content, imageUrl } = location.state || {};
 
   if (!title || !content || !imageUrl) {
-    // Handle the case where the necessary props are not available
+   
     return <div>Blog post details not found.</div>;
   }
 
