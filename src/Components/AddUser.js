@@ -1,127 +1,157 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '../styles/AddUserStyle.css'
-import logoImage from '../assets/aps-icon.jpg'
+import logoImage from '../assets/icons8-user-100.png'
 import addIcon from '../assets/addIcon.svg'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import Topnav from './Topnav';
 
 function AddUser() {
 
 
- const [userData, setuserData] = useState({
-    firstName: '',
-    lastName: '',
-    userName:'',
-    userPassword:'',
-  });
+          const [userData, setuserData] = useState({firstName: '',lastName: '', userName:'',userPassword:'', });
 
-  const { firstName, lastName, userName,userPassword} = userData;
- const [image, setImage] = useState(null);
- const inputRef = useRef(null);
- const navigate = useNavigate();
+          const { firstName, lastName, userName,userPassword} = userData;
+          const [image, setImage] = useState(null);
+          const [count,setCount] = useState(null)
+          const inputRef = useRef(null);
+          const navigate = useNavigate();
 
 
+          useEffect(()=>{
+            const count_user= async () => {
 
- const handleImageFile = () => {
-   inputRef.current.click();
- };
+              try {const response = await axios.get('http://localhost:8080/user/count');setCount(response.data);}
+              catch (error) { console.error('Error during login:', error);}}
 
- const handleInputChange = (e) => {
-    setuserData({ ...userData, [e.target.name]: e.target.value });
-    
-  };
+              count_user();
+          },[count])
 
- const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const dataURL = event.target.result;
-        setuserData({
-          ...userData, 
-          photo: e.target.files[0],
-        });
-        setImage(dataURL);
-      
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+          const count_state = () =>{
+            if (count !== null) {
+                  if(count === 0){ 
+                    return true;
+                  }
+                  else{
+                    return false;
+                  }
+                }
+              }
+
+        
+          const handleImageFile = () => {
+            inputRef.current.click();
+          };
+
+          const handleInputChange = (e) => {
+              setuserData({ ...userData, [e.target.name]: e.target.value });
+              
+            };
+
+          const handleImageChange = (e) => {
+              const file = e.target.files[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                  const dataURL = event.target.result;
+                  setuserData({
+                    ...userData, 
+                    photo: e.target.files[0],
+                  });
+                  setImage(dataURL);
+                
+                };
+                reader.readAsDataURL(file);
+              }
+            };
 
 
-    const dataToSend = new FormData();
-    dataToSend.append('firstName', userData.firstName);
-    dataToSend.append('lastName', userData.lastName);
-    dataToSend.append('userName', userData.userName);
-    dataToSend.append('userPassword', userData.userPassword);
-    dataToSend.append('photo', userData.photo);
-    dataToSend.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-    try {
-        if(image){ 
-            await axios.post("http://localhost:8080/user/registration", dataToSend, {
-        headers: {'Content-Type': 'multipart/form-data'}});
-       alert('Data sent successfully!');
-      
-      setuserData({
-        firstName: '',
-        lastName: '',
-        userName: '',
-        userPassword:'',
-        photo: null,
-      });
-      setImage(null);
-      navigator('/usrdetails')
-        }else { 
-          alert('image required')
-        }
-      
-    } 
-    catch (error) {
-    //   console.error('Error sending data:', error);
-    //   alert(error)
-      console.log(userData)
-    }
-  };
+            const save = async (get_data) =>{
 
-  const generateRandomPassword = () => {
-    const length = 8; 
-    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
+              await axios.post("http://localhost:8080/user/registration", get_data, { headers: {'Content-Type': 'multipart/form-data'}});
+              alert('Saved');
+              
+              setuserData({ firstName: '',lastName: '',userName: '',userPassword:'',photo: null,});
+              setImage(null);
+              navigate('/dashboard')
+            }
 
-    let password = "";
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * charset.length);
-      password += charset[randomIndex];
-    }
+            const handleSubmit = async (e) => {
+              e.preventDefault();
 
-    return password;
-  };
+              if (!firstName || !lastName || !userName || !userPassword || !image) {
+                alert('Please fill in all required fields.');
+                return;
+              }
 
-  const showAlert = () => {
-    const password = generateRandomPassword();
+              const dataToSend = new FormData();
+              dataToSend.append('firstName', userData.firstName);
+              dataToSend.append('lastName', userData.lastName);
+              dataToSend.append('userName', userData.userName);
+              dataToSend.append('userPassword', userData.userPassword);
+              dataToSend.append('photo', userData.photo);
+              dataToSend.forEach((value, key) => {console.log(`${key}: ${value}`);});
 
-    const inputField = document.getElementById('passwordInput');
-    
-      inputField.value = password;
-      userData.userPassword = password
-    
- 
-    alert(`Your random password is: ${password}`);
-  };
+              if(count_state()){
+
+                  if(userData.userName === 'Admin' && userData.userPassword === 'Password'){
+
+                    try { save(dataToSend)}
+                    catch (error) { console.error('Error sending data:', error);}}
+                  
+                  else{alert('Only Admin Allowed To Register')}}
+
+              else{
+                try {save(dataToSend)}
+                catch (error) { console.error('Error sending data:', error);} }};
+
+
+            const generateRandomPassword = () => {
+              const length = 8; 
+              const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
+
+              let password = "";
+              for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * charset.length);
+                password += charset[randomIndex];
+              }
+
+              return password;
+            };
+
+            const showAlert = () => {
+              const password = generateRandomPassword();
+
+              const inputField = document.getElementById('passwordInput');
+              inputField.value = password;
+              userData.userPassword = password
+          
+              alert(`Your random password is: ${password}`);
+            };
 
   return (
     <div className='form-wrapper'>
-      <Topnav/>
-      <div className='form-wrapper_div'>
-      <form className='add-user-form'  > 
-      <h4>Add New User</h4> 
-       <fieldset> 
+      <div className="login-left">
+            <div className="login-title_">
+              <div className="login_logo">
+                <i className="fa-solid fa-school"></i> 
+                <p>Main<span>land</span></p>
+              </div>
+                <h1>Please register to create meaningful content for our website.</h1>
+                <p className='login_subtitle'>Just register and login to start writing about your experiences 
+                that you had at our wonderful school.</p>
+            </div>
+       </div>
 
+      <div className='right_div'>
+        
+      <form className='add-user-form'  > 
+      
+       <fieldset> 
+       <h4 className='heading'>Please register </h4> 
        <div className='imageFile'>
+          <label> 
+             Image<sup>*</sup> 
+           </label>
           <div className='imageFile__holder'>
             {image ? (
               <img className='image-selected' src={image} alt='upload' />
@@ -133,6 +163,7 @@ function AddUser() {
           </div>
 
           <div className='plus-icon' onClick={handleImageFile}>
+
             <input
               type='file'
               ref={inputRef}
@@ -145,7 +176,6 @@ function AddUser() {
           </div>
         </div>
 
-
          <div className="Field"> 
            <label> 
              First name <sup>*</sup> 
@@ -154,7 +184,8 @@ function AddUser() {
               onChange={(e) => handleInputChange(e)}
               value={firstName}
               name='firstName'
-             placeholder="First name" 
+             placeholder="First nam
+             requirede" 
            /> 
          </div> 
 
@@ -164,7 +195,8 @@ function AddUser() {
              onChange={(e) => handleInputChange(e)}
              value={lastName}
              name='lastName'
-             placeholder="Last name" 
+             placeholder="Last name"
+             required
            /> 
          </div> 
 
@@ -177,7 +209,7 @@ function AddUser() {
               value={userName}
               name='userName'
              placeholder="Email" 
-             required={true}
+              required ='true'
              type='email'
            /> 
          </div> 
@@ -192,19 +224,21 @@ function AddUser() {
              onChange={(e) => handleInputChange(e)}
              value={userPassword}
              name='userPassword'
-             placeholder='Password' 
+             placeholder='Password'
+             
              type='text'
            /> 
-           <Link  onClick={()=>showAlert()}>  Generate password  </Link> 
+           <Link className='gen_pass-link' onClick={()=>showAlert()}>  Generate password  </Link> 
            </div>
          
          </div> 
        
-         
-       </fieldset> 
-       <div className='admin-button'>
-          <button  onClick={(e)=>handleSubmit(e)}>  Create account  </button>
+         <div className='admin-button'>
+          <button  className='submit'onClick={(e)=>handleSubmit(e)}>  Please register  </button>
+          <button className='cancel'  onClick={()=>navigate('/dashboard')}>  Cancel  </button>
       </div>
+       </fieldset> 
+
        
      </form> 
       </div>

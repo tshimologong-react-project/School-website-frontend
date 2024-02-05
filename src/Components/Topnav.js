@@ -1,20 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Topnav.css'; 
-import { Link } from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 const Topnav = () => {
+
+  const [userName,setUserName] = useState('You are Offline')
+  const token = localStorage.getItem('jwtToken')
+  const naviagte = useNavigate()
+
+
+  useEffect(()=>{
+    
+    try {
+      const decodedTokenRole = jwtDecode(token).sub
+      if(token){
+        setUserName(decodedTokenRole)
+    
+      }else{
+        console.log('please login')
+        setUserName('')
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+   
+  },[token])
+
+
+
   return (
-    //The top Navigation Bar that contains the portal
+  
     <div className='topNav'>
         <div className="container">
           <div className='userlogins'>
-              <span href="#" className="logo1">078 3542 653</span>
-              <span href="#" className="logo1">email@email.com</span>
+              <span href="#" className="logo1" >078 3542 653</span>
+              <span href="#" className="logo1">{userName}</span>
           </div>
           <div className='navbar-btns'>
-            <a href='login'>Portal</a>
-            <a href='userDetails'>Support us</a>
-            {/* <button href='/userDetails'>Support us</button> */}
+            <Link className='portal' to={'/dashboard'}>Portal</Link>
+            <button>Support us</button>
           </div>
         </div>
     </div>
