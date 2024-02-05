@@ -1,42 +1,53 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import{useForm} from 'react-hook-form'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import Dashboard from './Dashboard';
-import {  useNavigate } from 'react-router-dom';
+import {  Link, useNavigate } from 'react-router-dom'
 
 
 
 const Login =  () => {
 
   const navigate = useNavigate(); 
+  const [count,setCount] = useState(null)
 
-
+  
     const {register,handleSubmit,formState:{errors}}=useForm();
 
-      const loginUser = async (data) => {
-        const basicAuthHeader = `Basic ${btoa(`${data.email}:${data.password}`)}`;
+    useEffect(()=>{
+      const count_user= async () => {
 
+        try {const response = await axios.get('http://localhost:8080/user/count');setCount(response.data);}
+        catch (error) { console.error('Error during login:', error);}}
+
+        count_user();
+    },[count])
+
+    const count_state = () =>{
+      if (count !== null) {
+            if(count === 0){ return false;}
+            else{return true}}}
+
+
+      const loginUser = async (data) => {
+
+  
         try {
-          const response = await axios.get('http://localhost:2023/In', {
-            headers: {
-              Authorization: basicAuthHeader,
-              'Content-Type': 'application/json',
-            },
+          const response = await axios.post('http://localhost:8080/authenticate/auth', {
+            userName: data.userName, 
+            userPassword: data.userPassword,
           });
-          if (response.status ===200) {
-              const text = await response.data;
-              if(data.email === response.data.email){
-                navigate("/dashboard")
-              }
-          } else if (response.status === 401) {
-            console.error('Unauthorized: Login failed');
-            // Display an error message to the user.
+          const token = response.data;
+          if (!token.includes("<!DOCTYPE html>")) {
+          
+            localStorage.setItem('jwtToken',token);
+            navigate('/dashboard')
+ 
           } else {
             console.error('Login failed with status:', response.status);
+            alert('Incorrect credentials')
           }
-          } catch (error) {
-            console.error('Error during login:', error);
+        } catch (error) {
+          console.error('Error during login:', error);
         }
         
       }
@@ -53,7 +64,7 @@ const Login =  () => {
                   <div className="login_logo">
                     <i className="fa-solid fa-school"></i> 
                     <p>Main<span>land</span></p>
-                  </div>
+                  </div> 
                    <h1>Please register to create meaningful content for our website.</h1>
                    <p className='login_subtitle'>Just register and login to start writing about your experiences 
                     that you had at our wonderful school.</p>
@@ -61,13 +72,20 @@ const Login =  () => {
              </div>
              <div className="login-right-column">
                 <div className="login-form-box">
-                  <h2>Please log in</h2>
-                  <p id='register_text'>Not registered please <span>Register</span></p>
+                  <h2>Please login </h2>
+
+                  {count_state() ? (null):( <p id='register_text'>Not registered please <Link to={'/register'}>Register</Link></p>)}
+                
                   <form onSubmit={handleSubmit(loginUser)}>
-                    <input type="text" placeholder='enter email'{...register('email')}/>
+                  <h6><i className="lni lni-unlock"></i> email</h6>
+                    <input type="text" placeholder='enter email'{...register('userName')}/>
                     <h6><i className="lni lni-unlock"></i> Password</h6>
-                    <input type="password" placeholder='enter password' {...register('password')}/>
-                    <button  > Login</button>
+                    <input  type="text" placeholder='enter password'{...register('userPassword')}/>
+                    <div className='button_wrapper'>
+                    <button type='onsubmit' > Login</button>
+                    <Link className='cancel-login' to={'/'} > Cancel</Link>
+                    </div>
+                    
                   </form>
                 </div>
              </div>

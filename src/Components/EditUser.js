@@ -1,14 +1,13 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/EditorUserStyle.css';
 import addIcon from '../assets/addIcon.svg';
 import axiosInstance from '../AxiosInstanceConfig/axiosInstance'
 
 
-const EditUser = ({ userName, displayUser, reload }) => {
+const EditUser = ({ userName, displayUser, reload_user,reload_admin,role }) => {
   const [userData, setUserData] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
   const [isDefault, setIsDefault] = useState(true);
@@ -17,11 +16,9 @@ const EditUser = ({ userName, displayUser, reload }) => {
   const inputRef = useRef(null);
  
 
-  useEffect(() => {
-    getUserByUserName();
-  }, [userName]);
+  useEffect(() => {getuser_byusername(); }, [userName]);
 
-  const getUserByUserName = async () => {
+  const getuser_byusername = async () => {
     try {
       const response = await axiosInstance.get(`/findByUsername/${userName}`);
       setUserData(response.data);
@@ -37,6 +34,10 @@ const EditUser = ({ userName, displayUser, reload }) => {
       console.error(error);
     }
   };
+
+  const load_details = () =>{
+    if(role.includes('ROLE_USER')){ return reload_user()}
+    else if(role.includes('ROLE_ADMIN')){return reload_admin()}}
 
   const handleImageFile = () => {
     inputRef.current.click();
@@ -62,18 +63,14 @@ const EditUser = ({ userName, displayUser, reload }) => {
 
   const editUser = async (data) => {
     try {
-      const response = await axiosInstance.put(`/updateUser/${userName}`, {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        photo: userData.photo,
-      });
-      console.log('User updated successfully:', response.data);
+      await axiosInstance.put(`/updateUser/${userName}`, {firstName: data.firstName,lastName: data.lastName,photo: userData.photo,});
+
       setValue('firstName', '');
       setValue('lastName','');
       setImagePreview(addIcon)
 
-
-      reload();
+      displayUser(false)
+      load_details()
     } catch (error) {
       console.error('Error updating user:', error);
     }
@@ -81,21 +78,20 @@ const EditUser = ({ userName, displayUser, reload }) => {
 
   return (
     <div className="edit-component">
-      <div className='edit-component_div'>
-
+        
 
       <form className="editorForm" onSubmit={handleSubmit(editUser)}>
-      <h4>Edit user</h4>
+      <h2>Edit user</h2>
       <fieldset className='fieldset_edit'>
 
       <div className="image-file">
       
       <div className="image-file__holder">
         {isDefault ? (
-          <img className="image-selected-edit" src={imagePreview} alt="upload" />
+          <img className="image-selected-edit" src={imagePreview} alt="" />
         ) : (
           <div className="image-default-wrapper">
-            <img className="image-selected-edit" src={imagePreview} alt="upload" />
+            <img className="image-selected-edit" src={imagePreview} alt="" />
           </div>
         )}
       </div>
@@ -134,11 +130,11 @@ const EditUser = ({ userName, displayUser, reload }) => {
           Cancel
         </button>
       </div>
-        </form>
+      </form>
      
 
     
-      </div>
+      
 
     </div>
   );

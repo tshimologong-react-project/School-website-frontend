@@ -8,20 +8,24 @@
     padding: 0;
     margin: 0;
 }
-.login-container .page-row{display: flex;}
+.login-container .page-row{
+    display: flex;
+    justify-content: center;
+    background-color: #273A5C;
+}
 .login-left-column{
     width: 50%;
     height: 100vh;
-    background-image: url("");
+    /* background-image: url("");
     background-repeat: no-repeat;
     background-position: bottom center;
-    background-size: cover;
+    background-size: cover; */
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
-    position: relative;
 }
-.login-left-column::after{
+/* .login-left-column::after{
     content: "";
     position: absolute;
     width: 100%;
@@ -30,7 +34,7 @@
     left: 0;
     background-color: blue;
    z-index: 10;
-}
+} */
 .login_logo{
     margin:80px 0 130px 0;
     font-size: 25px;
@@ -43,28 +47,33 @@
 }
 .login_logo span{font-weight: 300;}
 .login-title-box{
-    width: 65%;
-    position: absolute;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
     z-index: 2;
     color: #fff;
 }
 .login-title-box h1{
      font-family: 'Poppins', sans-serif;
-     font-size: 42px;
+     font-size: 2.5em;
      font-weight: 700;
      line-height: 55px;
      margin-bottom: 1rem;
 }
-.login-title-box .login_subtitle{font-size: 17px;}
+.login-title-box .login_subtitle{font-size: 1em;}
 .login-right-column{
     width: 50%;
+    height: 100vh;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
-    background-color: #fff;
+    background-color: #ffffff;
 }
 .login-form-box{
     width: 65%;
+    height: fit-content;
+    padding: 8px;
     font-family: 'Poppins', sans-serif;
 }
 .login-form-box h2{
@@ -78,7 +87,7 @@
 }
 #register_text span{color: blue; text-decoration: underline; cursor: pointer;}
 .login-form-box h6{
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 400;
     text-transform: capitalize;
     margin-top: 16px;
@@ -87,7 +96,7 @@
     align-items: center;
 }
 .login-form-box h6 i{
-    font-size: 16px;
+    font-size: 18px;
     margin-right: 10px;
     color: blue;
 }
@@ -96,21 +105,54 @@
     padding: 16px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    text-transform: none;
 }
 .login-form-box input::placeholder{
     font-size: 12px;
     color: #bbb;
     text-transform: capitalize;
 }
-.login-form-box form button{
-    background-color: blue;
+.button_wrapper{
+    width: 100%;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 2px;
+    padding: 0;
+}
+.button_wrapper button{
+    width: auto;
+    height:  auto;
+    background-color: #273A5C;
     color: #fff;
     margin-top: 2rem;
-    padding: 13px 2rem;
+    padding: 13px 1.6rem;
     border-radius: 20px;
+    transition: all 250ms ease-in-out;
 }
+
+.button_wrapper .cancel-login{
+    width: auto;
+    background-color: #743943;
+    color: #fff;
+    margin-top: 2rem;
+    padding: 12px 1.6rem;
+    border-radius: 20px;
+    transition: all 250ms ease-in-out;
+    text-transform: none;
+    text-decoration: none;
+    font-weight: 600;
+}
+
 .login-form-box form button:hover{
     background-color: #fff;
-    border: 1px solid blue;
-    color: blue;
+    border: 1px solid #273A5C;
+    color: #273A5C;
+}
+
+.button_wrapper .cancel-login:hover{
+    background-color: #fff;
+    border: 1px solid #743943;
+    color: #743943;
 }
