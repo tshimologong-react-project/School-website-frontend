@@ -1,0 +1,98 @@
+
+.edit-component{
+    width: 100%;
+    height: 100vh;
+    background-color: #cecedf;
+   
+}
+
+.edit-component_div{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.fieldset_edit {
+    display: flex;
+    width: 480px;
+    padding: 16px;
+    background-color: #fcfcfc;
+    box-shadow: 1px 1px 5px gainsboro;
+    border-radius: 5px;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+.image-file{
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    margin: 5px 0px;
+}
+
+.image-file__holder{
+
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 1px #989898 solid;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.image-selected-edit{
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+.editorForm{
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #3f3f86
+}
+
+.editorForm h4{
+    color: white;
+}
+
+.editorForm input{
+   padding: 10px;
+   background-color: #f3f3f3;
+   border: 1px solid #ccc;
+}
+
+.edit-action-div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit-action-div button{
+    padding: 12px;
+    width: 200px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    background-color: #1976d2;
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+

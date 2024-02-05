@@ -1,0 +1,163 @@
+.form-wrapper{
+    width: 100%;
+    height: 100vh;
+    background-color: #cecedf
+   
+}
+
+.form-wrapper_div{
+  width: 100%;
+  display: flex;
+  margin-top: 2%;
+  align-items: center;
+  justify-content: space-around;
+  justify-self: center;
+}
+.add-user-form{
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #3f3f86
+
+}
+
+.add-user-form h4{
+  color: white;
+}
+  
+  fieldset {
+    display: flex;
+    width: 480px;
+    padding: 16px;
+    background-color: #fcfcfc;
+    box-shadow: 1px 1px 5px gainsboro;
+    border-radius: 5px;
+    flex-direction: column;
+  }
+  
+  .imageFile{
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    border: 2px transparent solid;
+}
+
+.imageFile__holder{
+
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 60%;
+    border: 1px #1976d2 solid;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.image-selected{
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #1976d2;
+}
+
+.image-default-wrapper{ 
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-icon{
+
+    height: 35px;
+    width: 35px;
+    position: relative;
+    left: -60%;
+    top: 60%;
+    cursor: pointer;
+
+}
+  
+  label {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  
+  sup {
+    color: red;
+    top: -2px;
+    font-size: 95%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+  
+  input,
+  select {
+    border-radius: 4px;
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    height: 32px;
+    padding: 10px;
+  }
+  
+  .input-gen-button{
+    display: flex;
+    justify-content: space-between;
+    
+  }
+
+
+  .Field {
+    position: relative;
+    padding-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .FieldError {
+    position: absolute;
+    bottom: -6px;
+    color: red;
+    font-size: 12px;
+  }
+  
+  .Row {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  button {
+    padding: 12px;
+    width: 240px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    background-color: #1976d2;
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  button:disabled,
+  button[disabled] {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+  }
+
+  .admin-button{
+    display: flex;
+  }

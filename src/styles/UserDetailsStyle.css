@@ -19,7 +19,127 @@
     
     width: 100px;
     margin: 0;  
+    }*{
+        padding: 0;
+        margin: 0;
+        font-family:'Poppins', 'sans-serif';
+        text-transform: capitalize;
+        list-style: none;
+        text-decoration: none;
     }
+    
+    .container-table{
+        width: 100%;
+        height: 100vh;
+        background-color: #cecedf;
+    }
+    
+    
+    
+    .switch-div{
+        width: 100%;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .add-user{
+        width: fit-content;
+        margin-bottom: 8px;
+        padding: 6px 22px;
+        border-radius: 4px;
+        display: flex;
+        align-self: flex-end;
+        background-color: #1976d2;
+        color: white
+    }
+    
+    .back-arrow{
+        display: flex;
+        align-self: flex-start;
+        padding: 8px;
+    }
+    
+    .table-wrapper{
+        height: 100%;
+        width: 80%;
+        position: relative;
+        top:0%;
+        display: flex;
+        flex-direction: column;
+        /* justify-content: space-between; */
+        background-color: #cecedf;
+    }
+    
+    .user-table{
+        background-color: #fcfcfc;
+        height: fit-content;
+        box-shadow: 1px 1px 5px  #3f3f86;
+        border: 1px solid #3f3f86;
+        border-radius: 6px;
+        
+    }
+    
+    .table-header{
+        background-color: #3f3f86;
+        
+    }
+    
+    
+    
+    .title{
+       
+        padding: 1rem 0;
+    }
+    
+    
+    
+    .pagingButtonResult p{
+        
+        width: 100px;
+        margin: 0;  
+        }
+    
+        .pagingButtonResult button{
+            width: 40px;
+            height: 40px;
+            padding: 0.8rem;
+            background-color: #1976d2;
+            background-size: 60% 60%;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 0.3rem;
+            border: none;
+        }
+        .pagingButtonResult{
+       
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0 0 0.5rem 0;
+        }
+    
+        .leftResult{
+    
+            background-image: url('../assets/icons8-back-100.png');  
+        }
+        
+        .rightResult{
+        
+            background-image: url('../assets/icons8-front-100.png');
+        }
+        
+        .pagingButtonResult p{
+            
+            width: 100px;
+            margin: 0;  
+            }
+            .photo{
+                width: 80px;
+                height: 80px;
+            }
 
     .pagingButtonResult button{
         width: 40px;
