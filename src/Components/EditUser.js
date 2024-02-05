@@ -1,168 +1,148 @@
-import React from 'react'
-import{useForm} from 'react-hook-form'
+
+import React, { useRef, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import {  useNavigate } from 'react-router-dom';
-import  { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import '../styles/EditorUserStyle.css';
+import addIcon from '../assets/addIcon.svg';
+import axiosInstance from '../AxiosInstanceConfig/axiosInstance'
 
 
+const EditUser = ({ userName, displayUser, reload }) => {
+  const [userData, setUserData] = useState({});
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isDefault, setIsDefault] = useState(true);
+  const navigate = useNavigate();
+  const { register, handleSubmit, setValue } = useForm();
+  const inputRef = useRef(null);
+ 
 
-const EditUser = ({userName}) => {
+  useEffect(() => {
+    getUserByUserName();
+  }, [userName]);
 
-    const [userData,setData] = useState([]);
-    const [newData,setNewData] = useState([]);
-    // const [userName,setName] = useState('');
-    const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
-    const pageSize = 1;
-    
+  const getUserByUserName = async () => {
+    try {
+      const response = await axiosInstance.get(`/findByUsername/${userName}`);
+      setUserData(response.data);
 
-    const navigate = useNavigate(); 
-  
-  
-    const {register,handleSubmit,formState:{errors}}=useForm();
-    useEffect(()=>{
+      setValue('firstName', response.data.firstName);
+      setValue('lastName', response.data.lastName);
 
-        getUserByUserName()
-    
-    },[userName]);
+      if (response.data.photo) {
+        setImagePreview(`data:image/jpeg;base64,${response.data.photo}`);
+        setIsDefault(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  const handleImageFile = () => {
+    inputRef.current.click();
+  };
 
-    const getUserByUserName = async ()=>{
-
-    
-
-        try {
-          const response = await axios.get(`http://localhost:8080/user/findByUsername/${userName}`);
-          
-          setNewData(response.data);
-        // has data  console.log(response.data)
-          
-            // console.error("API response is not an array:", response.data);
-        } catch (error) {
-           
-            console.error(error);
-        }
-
-
-    };
-
-    const editresult = async (data)=>{
-
-        // /findByUsername/{userName}
-
-    
-        console.log(data)
-     
-
-        // try {
-        //   const response = await axios.put(`http://localhost:8080/user/updateUser/${userName}`);
-
-        //   console.log(data.firstName)
-        //   console.log(data.lastName)
-        //   console.log(data.email)
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataURL = event.target.result;
+        setUserData({
+          ...userData,
+          photo: dataURL.split(',')[1],
+        });
+        setImagePreview(dataURL);
+        setIsDefault(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
 
+  const editUser = async (data) => {
+    try {
+      const response = await axiosInstance.put(`/updateUser/${userName}`, {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        photo: userData.photo,
+      });
+      console.log('User updated successfully:', response.data);
+      setValue('firstName', '');
+      setValue('lastName','');
+      setImagePreview(addIcon)
 
-          
-        //     setData(response.data.content);
-        //     // console.log(response.data)
-        //     setTotalPages(response.data.totalPages);
-        //     // console.error("API response is not an array:", response.data);
-        // } catch (error) {
-           
-        //     console.error(error);
-        // }
 
-
-    };
+      reload();
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
 
   return (
-    <div>
-        
-           <div className="login-right-column">
-                <div className="login-form-box"></div>
-                    <form onSubmit={handleSubmit(editresult)}>
-                    <h6><i className="lni lni-unlock"></i> First Name</h6>
-                    <input type="text" placeholder='enter First Name' defaultValue={newData.firstName} {...register('first_name')}/>
-                    <h6><i className="lni lni-unlock"></i> Last Name</h6>
-                    <input type="text" placeholder='enter Last Name' defaultValue={newData.lastName}  {...register('last_name')}/>
-                    <button  > Edit</button>
-                    </form>
-            </div>
-    </div>
-  )
-}
-
-export default EditUser
+    <div className="edit-component">
+      <div className='edit-component_div'>
 
 
+      <form className="editorForm" onSubmit={handleSubmit(editUser)}>
+      <h4>Edit user</h4>
+      <fieldset className='fieldset_edit'>
 
-// const Login =  () => {
-
-//     const navigate = useNavigate(); 
-  
-  
-//       const {register,handleSubmit,formState:{errors}}=useForm();
-  
-//         const loginUser = async (data) => {
-//           const basicAuthHeader = `Basic ${btoa(`${data.email}:${data.password}`)}`;
-  
-//           try {
-//             const response = await axios.get('http://localhost:2023/In', {
-//               headers: {
-//                 Authorization: basicAuthHeader,
-//                 'Content-Type': 'application/json',
-//               },
-//             });
-//             if (response.status ===200) {
-//                 const text = await response.data;
-//                 if(data.email === response.data.email){
-//                   navigate("/dashboard")
-//                 }
-//             } else if (response.status === 401) {
-//               console.error('Unauthorized: Login failed');
-//               // Display an error message to the user.
-//             } else {
-//               console.error('Login failed with status:', response.status);
-//             }
-//             } catch (error) {
-//               console.error('Error during login:', error);
-//           }
-          
-//         }
-  
-   
-  
-  
-//       return (
+      <div className="image-file">
       
-//           <div className="login-container">
-//             <div className="page-row">
-//                <div className="login-left-column">
-//                   <div className="login-title-box">
-//                     <div className="login_logo">
-//                       <i className="fa-solid fa-school"></i> 
-//                       <p>Main<span>land</span></p>
-//                     </div>
-//                      <h1>Please register to create meaningful content for our website.</h1>
-//                      <p className='login_subtitle'>Just register and login to start writing about your experiences 
-//                       that you had at our wonderful school.</p>
-//                   </div>
-//                </div>
-//                <div className="login-right-column">
-//                   <div className="login-form-box">
-//                     <h2>Please log in</h2>
-//                     <p id='register_text'>Not registered please <span>Register</span></p>
-//                     <form onSubmit={handleSubmit(loginUser)}>
-//                       <input type="text" placeholder='enter email'{...register('email')}/>
-//                       <h6><i className="lni lni-unlock"></i> Password</h6>
-//                       <input type="password" placeholder='enter password' {...register('password')}/>
-//                       <button  > Login</button>
-//                     </form>
-//                   </div>
-//                </div>
-//             </div>
-//           </div>
-//       )
-//   }
+      <div className="image-file__holder">
+        {isDefault ? (
+          <img className="image-selected-edit" src={imagePreview} alt="upload" />
+        ) : (
+          <div className="image-default-wrapper">
+            <img className="image-selected-edit" src={imagePreview} alt="upload" />
+          </div>
+        )}
+      </div>
+
+      <div className="plus-icon" onClick={handleImageFile}>
+        <input
+          type="file"
+          ref={inputRef}
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={handleImageChange}
+          
+        ></input>
+        <img className="add-icon" src={addIcon} alt="add" />
+      </div>
+    </div>
+    
+      <h6>
+        <i className="lni lni-unlock"></i> First Name
+      </h6>
+      <input type="text"  placeholder="Enter First Name" {...register('firstName')} />
+      <h6>
+        <i className="lni lni-unlock"></i> Last Name
+      </h6>
+      <input type="text" placeholder="Enter Last Name" {...register('lastName')} />
+
+
+
+      </fieldset>
+
+      <div className="edit-action-div">
+        <button className="submit-edit" type="submit">
+          Edit
+        </button>
+        <button className="cancel-edit" onClick={() => displayUser(false)}>
+          Cancel
+        </button>
+      </div>
+        </form>
+     
+
+    
+      </div>
+
+    </div>
+  );
+};
+
+export default EditUser;
+
