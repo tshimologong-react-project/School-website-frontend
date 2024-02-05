@@ -1,0 +1,62 @@
+/* Style for the container */
+.custom-container  h1{
+margin-inline-start: 40rem;
+}
+
+.custom-container  h2{
+  font-size: medium;
+  margin-inline-start: 17rem;
+  }
+  .custom-container .textbox{
+    margin-inline-start: 20rem;
+    }
+
+
+.custom-container  {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.custom-container .custom-update-btn{
+  margin-inline-start: 69rem;
+  margin-top:19px;
+}
+
+/* Style for the comment box */
+.custom-notification {
+  background-color: #f0f0f0; /* Grey background color */
+  padding: 9rem;
+  border-radius: 0px;
+  margin-bottom: 50px; /* Space between the comment box and the button */
+ width: 60rem;}
+
+/* Style for the button */
+.custom-update-btn {
+  background-color: #700000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  margin-inline-start: 71rem;
+  margin-top:19px;
+}
+
+.comment_box{
+  border: #700000;
+   width: 60rem;
+  margin-right: 111rem;}
+
+.textbox{
+  width: 700px; 
+  padding: 100px;
+  background-color: #f0f0f0; 
+  margin-inline-start: 20rem;
+}
+ h3{
+  margin-inline-start: 17rem;
+ }
+
+ .container h1{
+  margin-inline-start: 40rem;
+ }
